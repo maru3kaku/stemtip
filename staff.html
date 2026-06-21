@@ -362,55 +362,111 @@
     </section>
 
     <!-- 問い合わせ・応募フォームセクション -->
-      <!-- 問い合わせ・応募フォームセクション -->
-      <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title">応募・お問い合わせフォーム</h2>
-            
-            <div class="form-container">
-                <!-- 自社サーバーの send.php へ直接送信するように設定 -->
-                <form action="send.php" method="POST">
-                    
-                    <!-- ご希望の職種 -->
-                    <div class="form-group">
-                        <label class="required">ご希望の職種</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="job_type" value="ヘルパー（正社員）" checked> ヘルパー（正社員）</label>
-                            <label><input type="radio" name="job_type" value="ヘルパー（パート）"> ヘルパー（パート）</label>
-                            <label><input type="radio" name="job_type" value="ケアマネジャー"> ケアマネジャー</label>
-                        </div>
-                    </div>
-    
-                    <!-- お名前 -->
-                    <div class="form-group">
-                        <label for="name" class="required">お名前（フルネーム）</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="例：山田 太郎" required>
-                    </div>
-    
-                    <!-- 電話番号 -->
-                    <div class="form-group">
-                        <label for="tel" class="required">電話番号</label>
-                        <input type="tel" id="tel" name="tel" class="form-control" placeholder="例：09012345678" required>
-                    </div>
-    
-                    <!-- メールアドレス -->
-                    <div class="form-group">
-                        <label for="email" class="required">メールアドレス</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="例：example@stemtip.com" required>
-                    </div>
-    
-                    <!-- メッセージ -->
-                    <div class="form-group">
-                        <label for="message">メッセージ・自己PR・ご質問など</label>
-                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="ご自由に記入してください"></textarea>
-                    </div>
-    
-                    <!-- 送信ボタン -->
-                    <div class="submit-area">
-                        <button type="submit" class="btn-submit">この内容で送信する</button>
-                    </div>
-    
-                </form>
-            </div>
-        </div>
-    </section>
+    <section id="contact" class="contact-section">
+      <div class="container">
+          <h2 class="section-title">応募・お問い合わせフォーム</h2>
+          
+          <div class="form-container">
+              <!-- 【変更点1】id="contactForm" を追加し、actionとmethodを削除（JSで制御するため） -->
+              <form id="contactForm">
+                  
+                  <!-- ご希望の職種 -->
+                  <div class="form-group">
+                      <label class="required">ご希望の職種</label>
+                      <div class="radio-group">
+                          <label><input type="radio" name="job_type" value="ヘルパー（正社員）" checked> ヘルパー（正社員）</label>
+                          <label><input type="radio" name="job_type" value="ヘルパー（パート）"> ヘルパー（パート）</label>
+                          <label><input type="radio" name="job_type" value="ケアマネジャー"> ケアマネジャー</label>
+                      </div>
+                  </div>
+  
+                  <!-- お名前 -->
+                  <div class="form-group">
+                      <label for="name" class="required">お名前（フルネーム）</label>
+                      <input type="text" id="name" name="name" class="form-control" placeholder="例：山田 太郎" required>
+                  </div>
+  
+                  <!-- 電話番号 -->
+                  <div class="form-group">
+                      <label for="tel" class="required">電話番号</label>
+                      <input type="tel" id="tel" name="tel" class="form-control" placeholder="例：09012345678" required>
+                  </div>
+  
+                  <!-- メールアドレス -->
+                  <div class="form-group">
+                      <label for="email" class="required">メールアドレス</label>
+                      <input type="email" id="email" name="email" class="form-control" placeholder="例：example@stemtip.com" required>
+                  </div>
+  
+                  <!-- メッセージ -->
+                  <div class="form-group">
+                      <label for="message">メッセージ・自己PR・ご質問など</label>
+                      <textarea id="message" name="message" class="form-control" rows="5" placeholder="ご自由に記入してください"></textarea>
+                  </div>
+  
+                  <!-- 送信ボタン -->
+                  <div class="submit-area">
+                      <button type="submit" class="btn-submit" id="submitBtn">この内容で送信する</button>
+                  </div>
+  
+                  <!-- 【変更点2】送信状態や結果を表示するメッセージエリアを追加 -->
+                  <div id="responseMessage" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
+  
+              </form>
+          </div>
+      </div>
+  </section>
+  
+  <!-- 【変更点3】GASと連携するためのJavaScriptコードをセクションのすぐ下に追加 -->
+  <script>
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault(); // 通常の画面遷移（ページリロード）を防止
+  
+      // ★ここに取得したGASのウェブアプリURLを貼り付けてください
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbycLQD1rUYFjzA0w2R2jXx3qJr-0r_jQ-W47p-q9Il_xa8atzH1gPoz24safdkVxNj66A/exec";
+  
+      const submitBtn = document.getElementById('submitBtn');
+      const responseMessage = document.getElementById('responseMessage');
+  
+      // ボタンの二重クリック防止と送信中メッセージの表示
+      submitBtn.disabled = true;
+      responseMessage.style.color = "#333";
+      responseMessage.innerText = "送信中...";
+  
+      // フォームデータの収集（職種、名前、電話番号、メール、メッセージ）
+      const data = {
+          job_type: document.querySelector('input[name="job_type"]:checked').value,
+          name: document.getElementById('name').value,
+          tel: document.getElementById('tel').value,
+          email: document.getElementById('email').value,
+          message: document.getElementById('message').value
+      };
+  
+      try {
+          // GASへデータを非同期送信
+          const response = await fetch(GAS_URL, {
+              method: 'POST',
+              mode: 'cors',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify(data)
+          });
+  
+          const result = await response.json();
+          
+          if (result.status === 'success') {
+              responseMessage.style.color = "green";
+              responseMessage.innerText = "ご応募・お問い合わせありがとうございました！";
+              document.getElementById('contactForm').reset(); // 入力欄をクリア
+          } else {
+              responseMessage.style.color = "red";
+              responseMessage.innerText = "送信エラーが発生しました。時間をおいて再度お試しください。";
+              submitBtn.disabled = false;
+          }
+      } catch (error) {
+          console.error(error);
+          responseMessage.style.color = "red";
+          responseMessage.innerText = "通信エラーが発生しました。ネットワーク環境をご確認ください。";
+          submitBtn.disabled = false;
+      }
+  });
+  </script>  
