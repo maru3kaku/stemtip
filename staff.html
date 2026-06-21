@@ -451,9 +451,10 @@
     
             // GAS側のステータスが「完了」になっていれば、データは100%届いています
             responseMessage.style.color = "green";
-            responseMessage.innerText = "ご応募・お問い合わせありがとうございました！";
-            document.getElementById('contactForm').reset(); 
-    
+        responseMessage.innerText = "ご応募・お問い合わせありがとうございました！";
+        document.getElementById('contactForm').reset(); // 入力欄をクリア
+        
+        submitBtn.disabled = false; // ★2回目以降も押せるようにボタンのロックを解除！
         } catch (error) {
             console.error(error);
             responseMessage.style.color = "red";
