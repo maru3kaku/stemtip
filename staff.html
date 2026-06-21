@@ -422,17 +422,19 @@
     document.getElementById('contactForm').addEventListener('submit', async function(e) {
         e.preventDefault(); 
     
-        // ご提示いただいた最新のGASウェブアプリURLです
+        // ★現在お使いのGASのウェブアプリURLをここに貼り付けてください
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwNFjak7QKc93oLSwxY5Nxp6iNIkH3S0AZr_sqW6DgxaBWKrCRuxgBncSSlb0GyMe46/exec";
       
         const submitBtn = document.getElementById('submitBtn');
         const responseMessage = document.getElementById('responseMessage');
       
+        // 1. 送信ボタンを「送信中」にして、連続クリックを防ぐ
         submitBtn.disabled = true;
+        submitBtn.innerText = "送信中...";
         responseMessage.style.color = "#333";
-        responseMessage.innerText = "送信中...";
+        responseMessage.innerText = "送信中です。しばらくお待ちください...";
       
-        // 【重要】mode: 'no-cors' でも中身の文字が消えない形式（URLSearchParams）に変換してデータを準備します
+        // 2. データを安全に（文字が消えない形式で）準備
         const searchParams = new URLSearchParams();
         searchParams.append('job_type', document.querySelector('input[name="job_type"]:checked').value);
         searchParams.append('name', document.getElementById('name').value);
@@ -441,7 +443,7 @@
         searchParams.append('message', document.getElementById('message').value);
       
         try {
-            // データを確実にGASへ送信します
+            // 3. GASへデータを送信
             await fetch(GAS_URL, {
                 method: 'POST',
                 mode: 'no-cors', 
@@ -449,16 +451,24 @@
                 body: searchParams.toString()
             });
     
-            // 送信成功時の処理（2回目以降も連続で送れるようにボタンを復活させます）
+            // 4. 【大修正】成功したら、即座にボタンを元に戻し、次の送信ができるようにする
             responseMessage.style.color = "green";
             responseMessage.innerText = "ご応募・お問い合わせありがとうございました！";
+            
+            // フォームを空っぽにリセット
             document.getElementById('contactForm').reset(); 
+            
+            // ボタンの文字とロックを完全に解除（復活）
+            submitBtn.innerText = "この内容で送信する";
             submitBtn.disabled = false; 
     
         } catch (error) {
             console.error(error);
             responseMessage.style.color = "red";
-            responseMessage.innerText = "通信エラーが発生しました。ネットワーク環境をご確認ください。";
+            responseMessage.innerText = "通信エラーが発生しました。時間を置いて再度お試しください。";
+            
+            // エラー時もボタンを復活させる
+            submitBtn.innerText = "この内容で送信する";
             submitBtn.disabled = false;
         }
     });
