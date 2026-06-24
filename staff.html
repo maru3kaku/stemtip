@@ -14,7 +14,27 @@
             --text-color: #333333;
             --border-color: #E2E8F0;
         }
+        .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background-color: #ff9e79; /* 優しいオレンジピンク */
+  color: #ffffff;            /* 文字は白で見やすく */
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 50px;     /* 丸みのある可愛いシルエット */
+  box-shadow: 0 4px 10px rgba(255, 158, 121, 0.3); /* 柔らかい同系色の影 */
+  transition: all 0.3s ease;
+}
 
+/* マウスを乗せたとき（スマホはタップ時）の動き */
+.back-link:hover {
+  background-color: #ff8453; /* 少し濃いオレンジにして視認性アップ */
+  box-shadow: 0 2px 4px rgba(255, 158, 121, 0.2);   /* 少し沈むような効果 */
+  transform: translateY(1px);
+}
         * {
             box-sizing: border-box;
             margin: 0;
@@ -265,6 +285,8 @@
                 <div class="logo-subtitle">住み慣れた我が家での暮らしをサポート</div>
                 <h1>ステムテップ株式会社</h1>
             </div>
+            <a href="index.html" class="back-link">← トップページへ戻る</a>
+            <a href="library.html" class="back-link">← 書式ライブラリーへ</a>
         </div>
     </header>
 
@@ -274,6 +296,7 @@
             <h2>私たちと一緒に、笑顔を届ける仕事をしませんか？</h2>
             <p>ご利用者様とそのご家族に寄り添い、自分らしい在宅生活を支える仲間を募集しています。</p>
         </div>
+        <img src="image_72880bf1.png" alt="３枚の写真">
     </div>
 
     <!-- 募集要項セクション -->
@@ -288,7 +311,8 @@
                     <table class="job-table">
                         <tr>
                             <th>業務内容</th>
-                            <td>ご利用者様のご自宅を訪問し、身体介護（入浴・食事・着替え等）や生活援助（調理・掃除・買い物等）を行います。</td>
+                            <td>ご利用者様のご自宅を訪問し、身体介護（入浴・食事・着替え等）や生活援助（調理・掃除・買い物等）を行います。<br>
+                            固定曜日・固定時間で勤務できる方を優先させていただきます。</td>
                         </tr>
                         <tr>
                             <th>応募資格</th>
@@ -296,11 +320,12 @@
                         </tr>
                         <tr>
                             <th>給与・待遇</th>
-                            <td>【正社員】月給 230,000円〜 + 各種手当<br>【パート】時給 1,200円〜1,600円（時間・曜日による加算あり）</td>
+                            <td><!--【正社員】月給 230,000円〜 + 各種手当-->
+                            <br>【パート】時給 1,700円〜（時間・曜日による加算あり）</td>
                         </tr>
                         <tr>
                             <th>勤務時間</th>
-                            <td>8:30 〜 17:30（パートの方は週1日、1時間〜勤務相談可能）</td>
+                            <td>8:30 〜 19:00（週1日、1時間〜勤務相談可能）</td>
                         </tr>
                     </table>
                 </div>
@@ -329,11 +354,11 @@
                 </div>-->
                    <!--  職種3 -->
                 <div class="job-card">
-                    <h3>移動支援員</h3>
+                    <h3>移動支援員（パート）</h3>
                     <table class="job-table">
                         <tr>
                             <th>業務内容</th>
-                            <td>外出中の安全確保・移動支援外出先での必要なサポート、社会生活に不可欠な支援、通院・通学など</td>
+                            <td>外出中の安全確保・移動支援外出先での必要なサポート、社会生活に不可欠な支援、余暇活動・通院・通学など</td>
                         </tr>
                         <tr>
                             <th>応募資格</th>
@@ -349,7 +374,11 @@
                         </tr>
                         <tr>
                             <th>給与・待遇</th>
-                            <td>時給 2000円（経験・能力を考慮の上決定）</td>
+                            <td>時給 2000円〜（経験・能力を考慮の上決定）</td>
+                        </tr>
+                        <tr>
+                            <th>勤務時間</th>
+                            <td>8:30 〜 19:00（週1日、1時間〜勤務相談可能）</td>
                         </tr>
                         <tr>
                             <th>休日・休暇</th>
@@ -374,9 +403,10 @@
                   <div class="form-group">
                       <label class="required">ご希望の職種</label>
                       <div class="radio-group">
-                          <label><input type="radio" name="job_type" value="ヘルパー（正社員）" checked> ヘルパー（正社員）</label>
+                           <!--<label><input type="radio" name="job_type" value="ヘルパー（正社員）" checked> ヘルパー（正社員）</label>-->
                           <label><input type="radio" name="job_type" value="ヘルパー（パート）"> ヘルパー（パート）</label>
                           <label><input type="radio" name="job_type" value="ケアマネジャー"> ケアマネジャー</label>
+                          <label><input type="radio" name="job_type" value="移動支援員"> 移動支援員</label>
                       </div>
                   </div>
   
